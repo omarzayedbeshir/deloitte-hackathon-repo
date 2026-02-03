@@ -68,35 +68,195 @@ Server will be available at:
 http://127.0.0.1:5000
 ```
 
----
+# 🔐 Authentication API Documentation
 
-## 🧠 Why these are ignored
-
-* `instance/` → contains secrets & machine-specific config
-* `__pycache__/` → Python bytecode garbage, never commit this
-
----
-
-## 💡 Pro tip (optional but smart)
-
-Add a **template** file so people know what to create:
+Base URL (development):
 
 ```
-instance/
-└── config.example.py
+http://127.0.0.1:5000
 ```
 
-Then mention:
-
-> Copy `config.example.py` → `config.py` and edit values.
+All requests and responses use **JSON**.
 
 ---
 
-If you want, I can:
+## 📌 Overview
 
-* write the **full README.md**
-* suggest a **better .gitignore**
-* add `.env` support (recommended)
-* make onboarding literally foolproof
+This API provides:
 
-Say the word 👌
+* User registration
+* User login (JWT-based)
+* User logout (client-side)
+* Protected endpoints
+
+Authentication is handled using **JWT (JSON Web Tokens)**.
+
+---
+
+## 1️⃣ Register User
+
+### Endpoint
+
+```
+POST /auth/register
+```
+
+### Description
+
+Creates a new user account with a username and password.
+
+### Headers
+
+```
+Content-Type: application/json
+```
+
+### Request Body
+
+```json
+{
+  "username": "admin",
+  "password": "admin"
+}
+```
+
+### Successful Response
+
+**Status:** `201 Created`
+
+```json
+{
+  "msg": "User registered successfully"
+}
+```
+
+### Error Responses
+
+**User already exists**
+
+* Status: `400 Bad Request`
+
+```json
+{
+  "msg": "User already exists"
+}
+```
+
+---
+
+## 2️⃣ Login User
+
+### Endpoint
+
+```
+POST /auth/login
+```
+
+### Description
+
+Authenticates a user and returns a JWT access token.
+
+### Headers
+
+```
+Content-Type: application/json
+```
+
+### Request Body
+
+```json
+{
+  "username": "admin",
+  "password": "admin"
+}
+```
+
+### Successful Response
+
+**Status:** `200 OK`
+
+```json
+{
+  "access_token": "JWT_TOKEN_HERE"
+}
+```
+
+### Error Responses
+
+**Invalid credentials**
+
+* Status: `401 Unauthorized`
+
+```json
+{
+  "msg": "Invalid credentials"
+}
+```
+
+---
+
+## 3️⃣ Logout User
+
+### Endpoint
+
+There is no endpoint for logging out:
+
+⚠️ **Note:**
+This API uses **stateless JWT authentication**.
+Logout is handled **client-side** by deleting the stored token.
+
+### What logout means
+
+* The client deletes the JWT token
+* The server does not store sessions
+* The token becomes unusable once removed by the client
+
+### Example (Frontend logic)
+
+```js
+localStorage.removeItem("access_token");
+```
+
+---
+
+## 4️⃣ Protected Endpoint (Example)
+
+### Endpoint
+
+```
+GET /auth/protected
+```
+
+### Description
+
+An example endpoint that requires authentication.
+
+### Headers
+
+```
+Authorization: Bearer JWT_TOKEN_HERE
+```
+
+### Successful Response
+
+**Status:** `200 OK`
+
+```json
+{
+  "msg": "Hello user 1, you're authenticated"
+}
+```
+
+### Error Responses
+
+**Missing or invalid token**
+
+* Status: `401 Unauthorized`
+
+```json
+{
+  "msg": "Missing Authorization Header"
+}
+```
+
+---
