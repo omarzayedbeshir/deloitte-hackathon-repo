@@ -1,0 +1,111 @@
+// lib/productsMock.ts
+
+import { Product, ProductKpi } from "./types";
+
+export const initialProducts: Product[] = [
+  {
+    id: "1",
+    name: "Droned Vape",
+    category: "Traditional Vapes",
+    price: 45.0,
+    quantity: 120,
+    expiry: "2026-08-15",
+  },
+  {
+    id: "2",
+    name: "Crosscut E-Cig",
+    category: "E-Cigarettes",
+    price: 32.5,
+    quantity: 0,
+    expiry: "2026-06-30",
+  },
+  {
+    id: "3",
+    name: "Cultyvate Edible",
+    category: "Edibles",
+    price: 18.99,
+    quantity: 340,
+    expiry: "2026-03-10",
+  },
+  {
+    id: "4",
+    name: "Demi High Pod",
+    category: "Traditional Vapes",
+    price: 55.0,
+    quantity: 85,
+    expiry: "2027-01-20",
+  },
+  {
+    id: "5",
+    name: "Cloud Nine Juice",
+    category: "E-Cigarettes",
+    price: 22.0,
+    quantity: 0,
+    expiry: "2026-05-01",
+  },
+  {
+    id: "6",
+    name: "Natali Gummy Pack",
+    category: "Edibles",
+    price: 12.5,
+    quantity: 500,
+    expiry: "2026-12-31",
+  },
+  {
+    id: "7",
+    name: "Drew Cano Kit",
+    category: "Accessories",
+    price: 75.0,
+    quantity: 60,
+    expiry: "2028-06-15",
+  },
+  {
+    id: "8",
+    name: "Orlando Battery",
+    category: "Accessories",
+    price: 19.99,
+    quantity: 200,
+    expiry: "2029-01-01",
+  },
+  {
+    id: "9",
+    name: "Premium Vape Kit",
+    category: "Traditional Vapes",
+    price: 65.0,
+    quantity: 45,
+    expiry: "2026-09-30",
+  },
+  {
+    id: "10",
+    name: "Mint Bliss Liquid",
+    category: "E-Cigarettes",
+    price: 14.99,
+    quantity: 800,
+    expiry: "2026-04-15",
+  },
+  {
+    id: "11",
+    name: "Berry Chew",
+    category: "Edibles",
+    price: 9.99,
+    quantity: 150,
+    expiry: "2026-07-20",
+  },
+  {
+    id: "12",
+    name: "Turbo Charge Pack",
+    category: "Accessories",
+    price: 29.99,
+    quantity: 0,
+    expiry: "2027-03-01",
+  },
+];
+
+export const productKpis: ProductKpi[] = [
+  { key: "available", label: "Available Products", value: 0 },
+  { key: "outOfStock", label: "Out of Stock", value: 0 },
+  { key: "booked", label: "Booked", value: 10 },
+  { key: "billed", label: "Billed", value: 10 },
+  { key: "returnToOrigin", label: "Return to Origin", value: 10 },
+  { key: "deleted", label: "Deleted Products", value: 0 },
+];
