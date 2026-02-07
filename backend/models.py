@@ -35,6 +35,7 @@ class Category(db.Model):
 
 class Inventory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    sku_id = db.Column(db.String(20), unique=True, nullable=True, index=True)
     name = db.Column(db.String(120), nullable=False)
     expiry = db.Column(db.Date, nullable=True)
     quantity = db.Column(db.Integer, nullable=False)
@@ -48,6 +49,7 @@ class Inventory(db.Model):
     def to_dict(self):
         return {
             "id": str(self.id),
+            "sku_id": self.sku_id or "",
             "name": self.name,
             "expiry": self.expiry.isoformat() if self.expiry else None,
             "quantity": self.quantity,

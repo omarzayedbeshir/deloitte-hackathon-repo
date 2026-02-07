@@ -53,6 +53,30 @@ export interface Product {
     quantity: number;
     expiry: string; // ISO date string like "2026-12-31"
     description?: string;
+    skuId?: string;
+}
+
+// Demand Forecast Types
+export interface ForecastParams {
+    sku_id: string;
+    date: string;       // "YYYY-MM-DD"
+    temp: number;
+    rain: number;
+    holiday: number;     // 0 | 1
+}
+
+export interface ForecastResponse {
+    prediction: number;
+}
+
+export interface PortfolioRow {
+    product: Product;
+    skuId: string;
+    predictedDemand: number;
+    currentStock: number;
+    gap: number;
+    status: "stockout" | "ok" | "overstock";
+    error?: string;
 }
 
 export interface ProductFormData {

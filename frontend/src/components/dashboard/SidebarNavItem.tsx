@@ -11,6 +11,30 @@ interface SidebarNavItemProps {
 }
 
 const iconMap: Record<string, React.ReactNode> = {
+    demandForecast: (
+        <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M2.5 17.5L7.5 10.8333L11.6667 14.1667L17.5 5.83333"
+                stroke="currentColor"
+                strokeWidth="1.67"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M14.1667 5.83333H17.5V9.16667"
+                stroke="currentColor"
+                strokeWidth="1.67"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </svg>
+    ),
     overview: (
         <svg
             width="20"

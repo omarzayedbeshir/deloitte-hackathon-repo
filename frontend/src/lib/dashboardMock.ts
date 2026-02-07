@@ -114,6 +114,7 @@ export const products: ProductData[] = [
 
 export const navItems: NavItem[] = [
     { name: "Overview", href: "/overview", icon: "overview" },
+    { name: "Demand Forecast", href: "/demand-forecast", icon: "demandForecast" },
     { name: "Products", href: "/products", icon: "products" },
     { name: "Expiry Radar", href: "/expiry-radar", icon: "expiryRadar" },
     { name: "Transactions", href: "/transactions", icon: "transactions" },

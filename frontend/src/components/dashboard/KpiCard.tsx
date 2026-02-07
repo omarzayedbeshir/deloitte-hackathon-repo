@@ -62,46 +62,54 @@ export default function KpiCard({
                         {value}
                     </p>
                     <div className="flex items-center gap-1.5">
-                        <span
-                            className={`inline-flex items-center gap-0.5 text-sm font-medium ${isPositive ? "text-[#12B76A]" : "text-[#F04438]"
-                                }`}
-                        >
-                            {isPositive ? (
-                                <svg
-                                    width="12"
-                                    height="12"
-                                    viewBox="0 0 12 12"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
+                        {deltaPercent === 0 && value === "—" ? (
+                            <span className="text-sm text-[#667085]">No data</span>
+                        ) : deltaPercent === 0 ? (
+                            <span className="text-sm text-[#667085]">Current snapshot</span>
+                        ) : (
+                            <>
+                                <span
+                                    className={`inline-flex items-center gap-0.5 text-sm font-medium ${isPositive ? "text-[#12B76A]" : "text-[#F04438]"
+                                        }`}
                                 >
-                                    <path
-                                        d="M6 9.5V2.5M6 2.5L2.5 6M6 2.5L9.5 6"
-                                        stroke="currentColor"
-                                        strokeWidth="1.5"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    />
-                                </svg>
-                            ) : (
-                                <svg
-                                    width="12"
-                                    height="12"
-                                    viewBox="0 0 12 12"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M6 2.5V9.5M6 9.5L9.5 6M6 9.5L2.5 6"
-                                        stroke="currentColor"
-                                        strokeWidth="1.5"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    />
-                                </svg>
-                            )}
-                            {deltaPercent}%
-                        </span>
-                        <span className="text-sm text-[#667085]">vs last month</span>
+                                    {isPositive ? (
+                                        <svg
+                                            width="12"
+                                            height="12"
+                                            viewBox="0 0 12 12"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M6 9.5V2.5M6 2.5L2.5 6M6 2.5L9.5 6"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    ) : (
+                                        <svg
+                                            width="12"
+                                            height="12"
+                                            viewBox="0 0 12 12"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M6 2.5V9.5M6 9.5L9.5 6M6 9.5L2.5 6"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    )}
+                                    {deltaPercent}%
+                                </span>
+                                <span className="text-sm text-[#667085]">vs last period</span>
+                            </>
+                        )}
                     </div>
                 </div>
 
