@@ -5,6 +5,9 @@ from config import Config
 from models import db, Inventory, Transaction, Category
 from auth import auth
 from datetime import datetime, date
+import joblib
+import os
+import pandas as pd
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -355,6 +358,54 @@ def create_transaction():
         }
     ), 201
 
+@app.route("/inventory", methods=["GET"])
+def get_inventory():
+    inventory_items = Inventory.query.all()
+
+    result = []
+    for item in inventory_items:
+        result.append({
+            "id": item.id,
+            "name": item.name,
+            "expiry": item.expiry.isoformat() if item.expiry else None,
+            "quantity": item.quantity,
+            "category": item.category,
+            "price": item.price,
+            "description": item.description
+        })
+
+    return jsonify(result), 200
+
+@app.route("/predict", methods=["GET"])
+def predict_product():
+    sku_id = request.args.get('sku_id')
+    date = request.args.get('date')
+    temp = request.args.get('temp')
+    rain = request.args.get('rain')
+    holiday = request.args.get('holiday')
+
+    return jsonify({
+        'prediction': predict_from_saved_model(sku_id, date, temp, rain, holiday)
+    }), 200
+
+
+def predict_from_saved_model(sku_id, date, temp, rain, holiday):
+    model_path = os.path.join('saved_models', f"{sku_id}.pkl")
+
+    if os.path.exists(model_path):
+        model = joblib.load(model_path)
+
+        input_df = pd.DataFrame({
+            'ds': [pd.to_datetime(date)],
+            'temp_c': [temp],
+            'rain_mm': [rain],
+            'is_holiday': [holiday]
+        })
+
+        forecast = model.predict(input_df)
+        return forecast['yhat'].iloc[0]
+    else:
+        return "Model not found!"
 
 @app.route("/api/transactions", methods=["GET"])
 @jwt_required()
