@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ONEWAY 7 - Restaurant Ordering",
-  description: "Order delicious food from ONEWAY 7 restaurant",
+  title: "AMO Inventory System - Restaurant Ordering",
+  description: "The best cashier application ever for the best financial gains",
 };
 
 export default function RootLayout({

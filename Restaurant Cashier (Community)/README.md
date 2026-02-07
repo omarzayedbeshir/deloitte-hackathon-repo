@@ -1,4 +1,4 @@
-# Restaurant Ordering Web App - ONEWAY 7
+# Restaurant Ordering Web App - AMO Inventory System
 
 A responsive restaurant ordering web application built with Next.js, React, and Tailwind CSS.
 
