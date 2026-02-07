@@ -30,7 +30,7 @@ export const MenuCard: React.FC<MenuCardProps> = ({ item, onAddToCart }) => {
           {item.description}
         </p>
         <p className="text-primary font-bold mt-3 text-left">
-          Dkk. {item.price.toLocaleString("id-ID")}
+          Dkk. {item.price.toLocaleString("en-US")}
         </p>
       </div>
     </button>

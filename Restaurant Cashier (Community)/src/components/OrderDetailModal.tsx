@@ -14,7 +14,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 }) => {
   if (!isOpen || !order) return null;
 
-  const formattedDate = new Date(order.date).toLocaleDateString("id-ID", {
+  const formattedDate = new Date(order.date).toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -40,7 +40,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                 <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
               </div>
               <p className="font-bold text-primary">
-                DKK. {(item.price * item.quantity).toLocaleString("id-ID")}
+                DKK. {(item.price * item.quantity).toLocaleString("en-US")}
               </p>
             </div>
           ))}
@@ -51,7 +51,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           <div className="flex justify-between items-center">
             <p className="text-lg font-bold text-gray-900">Total:</p>
             <p className="text-2xl font-bold text-primary">
-              DKK. {order.totalPrice.toLocaleString("id-ID")}
+              DKK. {order.totalPrice.toLocaleString("en-US")}
             </p>
           </div>
         </div>

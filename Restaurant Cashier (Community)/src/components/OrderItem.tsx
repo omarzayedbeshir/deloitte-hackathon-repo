@@ -40,7 +40,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({
         <p className="text-xs text-gray-500 mt-1">{item.description}</p>
         <div className="flex items-center justify-between mt-2">
           <p className="text-primary font-bold text-sm">
-            DKK. {item.price.toLocaleString("id-ID")}
+            DKK. {item.price.toLocaleString("en-US")}
           </p>
           <QuantityButton
             quantity={item.quantity}

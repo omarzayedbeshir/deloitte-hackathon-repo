@@ -50,13 +50,13 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
           <div className="flex justify-between">
             <p className="text-gray-600">Total</p>
             <p className="font-bold text-primary">
-              DKK. {totalPrice.toLocaleString("id-ID")}
+              DKK. {totalPrice.toLocaleString("en-US")}
             </p>
           </div>
           <div className="flex justify-between">
             <p className="text-gray-600">Amount Paid</p>
             <p className="font-bold text-gray-900">
-              DKK. {totalPrice.toLocaleString("id-ID")}
+              DKK. {totalPrice.toLocaleString("en-US")}
             </p>
           </div>
           <div className="flex justify-between">

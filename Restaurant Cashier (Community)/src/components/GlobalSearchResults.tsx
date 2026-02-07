@@ -82,7 +82,7 @@ export const GlobalSearchResults: React.FC<GlobalSearchResultsProps> = ({
                   </p>
                   <p className="text-xs text-gray-500 mt-1">{item.category}</p>
                   <p className="text-sm font-bold text-primary mt-1">
-                    DKK. {item.price.toLocaleString("id-ID")}
+                    DKK. {item.price.toLocaleString("en-US")}
                   </p>
                 </div>
 

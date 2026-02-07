@@ -66,7 +66,7 @@ export const OrderSummaryModal: React.FC<OrderSummaryModalProps> = ({
                   {item.name}
                 </p>
                 <p className="text-sm text-primary font-bold">
-                  DKK. {item.price.toLocaleString("id-ID")}
+                  DKK. {item.price.toLocaleString("en-US")}
                 </p>
               </div>
               <p className="text-sm font-semibold text-gray-700 w-12 text-right">
@@ -81,7 +81,7 @@ export const OrderSummaryModal: React.FC<OrderSummaryModalProps> = ({
           <div className="flex justify-between items-center">
             <p className="text-lg font-bold text-gray-900">Total:</p>
             <p className="text-lg font-bold text-primary">
-              DKK. {totalPrice.toLocaleString("id-ID")}
+              DKK. {totalPrice.toLocaleString("en-US")}
             </p>
           </div>
         </div>

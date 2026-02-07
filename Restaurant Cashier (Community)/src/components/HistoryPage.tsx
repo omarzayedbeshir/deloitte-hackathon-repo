@@ -20,7 +20,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ order, onDelete, onSelect }) 
           {order.items.length} item{order.items.length > 1 ? "s" : ""}
         </p>
         <p className="text-lg font-bold text-primary mt-1">
-          DKK. {order.totalPrice.toLocaleString("id-ID")}
+          DKK. {order.totalPrice.toLocaleString("en-US")}
         </p>
       </div>
 
@@ -76,7 +76,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({
   // Group orders by date
   const groupedByDate = orderHistory.reduce(
     (groups, order) => {
-      const dateKey = order.date.toLocaleDateString("id-ID", {
+      const dateKey = order.date.toLocaleDateString("en-US", {
         weekday: "long",
         year: "numeric",
         month: "long",

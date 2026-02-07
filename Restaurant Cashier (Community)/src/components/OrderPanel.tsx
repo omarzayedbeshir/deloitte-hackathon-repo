@@ -99,7 +99,7 @@ export const OrderPanel: React.FC<OrderPanelProps> = ({
       <div className="bg-primary p-6 text-white">
         <div className="flex justify-between items-center mb-4">
           <p className="text-sm font-medium">{totalItems} items</p>
-          <p className="text-xl font-bold">DKK. {totalPrice.toLocaleString("id-ID")}</p>
+          <p className="text-xl font-bold">DKK. {totalPrice.toLocaleString("en-US")}</p>
         </div>
         <button
           onClick={onCheckout}
