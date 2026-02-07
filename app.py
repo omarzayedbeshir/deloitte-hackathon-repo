@@ -4,6 +4,9 @@ from config import Config
 from models import db, Inventory, Transaction
 from auth import auth
 from datetime import datetime
+import joblib
+import os
+import pandas as pd
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -120,6 +123,37 @@ def get_inventory():
         })
 
     return jsonify(result), 200
+
+@app.route("/predict", methods=["GET"])
+def predict_product():
+    sku_id = request.args.get('sku_id')
+    date = request.args.get('date')
+    temp = request.args.get('temp')
+    rain = request.args.get('rain')
+    holiday = request.args.get('holiday')
+
+    return jsonify({
+        'prediction': predict_from_saved_model(sku_id, date, temp, rain, holiday)
+    }), 200
+
+
+def predict_from_saved_model(sku_id, date, temp, rain, holiday):
+    model_path = os.path.join('saved_models', f"{sku_id}.pkl")
+    
+    if os.path.exists(model_path):
+        model = joblib.load(model_path)
+        
+        input_df = pd.DataFrame({
+            'ds': [pd.to_datetime(date)],
+            'temp_c': [temp],
+            'rain_mm': [rain],
+            'is_holiday': [holiday]
+        })
+        
+        forecast = model.predict(input_df)
+        return forecast['yhat'].iloc[0]
+    else:
+        return "Model not found!"
 
 with app.app_context():
     db.create_all()
