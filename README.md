@@ -1,4 +1,4 @@
-## 📦 Project setup instructions
+## 📦 Project Setup Instructions
 
 ### 1️⃣ Clone the repository
 
@@ -41,7 +41,19 @@ py -m pip install -r requirements.txt
 
 ---
 
-### 6️⃣ Initialize the database (first run only)
+### 4️⃣ Configure environment variables
+
+Create a `.env` file (or configure directly in `config.py`) and set:
+
+```env
+SECRET_KEY=your-secret-key
+JWT_SECRET_KEY=your-jwt-secret-key
+SQLALCHEMY_DATABASE_URI=sqlite:///database.db
+```
+
+---
+
+### 5️⃣ Initialize the database (first run only)
 
 ```bash
 python app.py
@@ -52,11 +64,11 @@ python app.py
 This will:
 
 * create the database
-* prepare required tables
+* create all required tables (Inventory & Transactions)
 
 ---
 
-### 7️⃣ Run the app
+### 6️⃣ Run the app
 
 ```bash
 python app.py
@@ -67,6 +79,8 @@ Server will be available at:
 ```
 http://127.0.0.1:5000
 ```
+
+---
 
 # 🔐 Authentication API Documentation
 
@@ -86,8 +100,8 @@ This API provides:
 
 * User registration
 * User login (JWT-based)
-* User logout (client-side)
-* Protected endpoints
+* Protected inventory management
+* Public transaction creation
 
 Authentication is handled using **JWT (JSON Web Tokens)**.
 
@@ -99,16 +113,6 @@ Authentication is handled using **JWT (JSON Web Tokens)**.
 
 ```
 POST /auth/register
-```
-
-### Description
-
-Creates a new user account with a username and password.
-
-### Headers
-
-```
-Content-Type: application/json
 ```
 
 ### Request Body
@@ -130,18 +134,6 @@ Content-Type: application/json
 }
 ```
 
-### Error Responses
-
-**User already exists**
-
-* Status: `400 Bad Request`
-
-```json
-{
-  "msg": "User already exists"
-}
-```
-
 ---
 
 ## 2️⃣ Login User
@@ -150,16 +142,6 @@ Content-Type: application/json
 
 ```
 POST /auth/login
-```
-
-### Description
-
-Authenticates a user and returns a JWT access token.
-
-### Headers
-
-```
-Content-Type: application/json
 ```
 
 ### Request Body
@@ -181,37 +163,15 @@ Content-Type: application/json
 }
 ```
 
-### Error Responses
-
-**Invalid credentials**
-
-* Status: `401 Unauthorized`
-
-```json
-{
-  "msg": "Invalid credentials"
-}
-```
-
 ---
 
 ## 3️⃣ Logout User
 
-### Endpoint
-
-There is no endpoint for logging out:
-
 ⚠️ **Note:**
 This API uses **stateless JWT authentication**.
-Logout is handled **client-side** by deleting the stored token.
 
-### What logout means
-
-* The client deletes the JWT token
-* The server does not store sessions
-* The token becomes unusable once removed by the client
-
-### Example (Frontend logic)
+There is **no logout endpoint**.
+Logout is handled client-side by deleting the stored token.
 
 ```js
 localStorage.removeItem("access_token");
@@ -219,44 +179,150 @@ localStorage.removeItem("access_token");
 
 ---
 
-## 4️⃣ Protected Endpoint (Example)
+# 📦 Inventory API Documentation
+
+## 4️⃣ Add / Update Inventory (Protected)
 
 ### Endpoint
 
 ```
-GET /auth/protected
+POST /inventory
 ```
 
-### Description
-
-An example endpoint that requires authentication.
-
-### Headers
+### Authentication Required
 
 ```
 Authorization: Bearer JWT_TOKEN_HERE
 ```
 
-### Successful Response
+### Description
 
-**Status:** `200 OK`
+* Adds a new inventory item
+* If the item already exists (same name), it updates:
+
+  * quantity
+  * price
+  * category
+  * expiry
+  * description
+
+### Request Body
 
 ```json
 {
-  "msg": "Hello user 1, you're authenticated"
+  "name": "Milk",
+  "expiry": "2026-01-01",
+  "quantity": 10,
+  "category": "Dairy",
+  "price": 2.5,
+  "description": "Low fat milk"
+}
+```
+
+### Required Fields
+
+* `name`
+* `quantity`
+* `category`
+* `price`
+
+### Successful Response
+
+**Status:** `201 Created`
+
+```json
+{
+  "message": "Inventory saved successfully"
 }
 ```
 
 ### Error Responses
 
-**Missing or invalid token**
-
-* Status: `401 Unauthorized`
+**Missing required fields**
 
 ```json
 {
-  "msg": "Missing Authorization Header"
+  "error": "Missing required fields"
 }
 ```
+
+---
+
+# 💳 Transactions API Documentation
+
+## 5️⃣ Create Transaction
+
+### Endpoint
+
+```
+POST /transactions
+```
+
+### Description
+
+Creates a transaction and:
+
+* checks item existence
+* checks expiry date
+* checks available quantity
+* deducts stock
+* calculates total price
+
+⚠️ **No authentication required**
+
+### Request Body
+
+```json
+{
+  "name": "Milk",
+  "quantity": 2
+}
+```
+
+### Successful Response
+
+**Status:** `201 Created`
+
+```json
+{
+  "message": "Transaction completed",
+  "total_price": 5.0
+}
+```
+
+### Error Responses
+
+**Item not found**
+
+```json
+{
+  "error": "Item not found"
+}
+```
+
+**Item expired**
+
+```json
+{
+  "error": "Item is expired"
+}
+```
+
+**Insufficient stock**
+
+```json
+{
+  "error": "Insufficient stock"
+}
+```
+
+---
+
+## 🧠 Notes
+
+* Dates must be in `YYYY-MM-DD` format
+* Expired items cannot be sold
+* Inventory quantity is automatically updated after each transaction
+* Database tables are auto-created on app startup
 
 ---
