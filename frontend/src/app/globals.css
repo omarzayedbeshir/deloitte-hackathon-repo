@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Colors */
+  --brand-purple: #6941C6;
+  --brand-purple-hover: #5a37a8;
+  --brand-purple-light: #7c5bd4;
+
+  /* Text Colors */
+  --text-title: #101828;
+  --text-body: #70798C;
+  --text-muted: #98A2B3;
+
+  /* UI Colors */
+  --input-border: #E2E4E7;
+  --input-border-focus: #6941C6;
+  --background: #ffffff;
+  --foreground: #171717;
+  --error: #dc2626;
+
+  /* Spacing & Sizing */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 40px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-purple-hover: var(--brand-purple-hover);
+  --color-text-title: var(--text-title);
+  --color-text-body: var(--text-body);
+  --color-input-border: var(--input-border);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
+
+/* Custom focus styles */
+.focus-ring {
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-purple)] focus-visible:ring-offset-2;
+}
+
+/* Hide default checkbox */
+.custom-checkbox {
+  @apply sr-only;
+}
+
+.custom-checkbox+label {
+  @apply cursor-pointer;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Toast slide-in animation */
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.25s ease-out;
+}
