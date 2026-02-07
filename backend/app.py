@@ -359,7 +359,7 @@ def create_transaction():
     ), 201
 
 @app.route("/inventory", methods=["GET"])
-def get_inventory():
+def get_inventory_all():
     inventory_items = Inventory.query.all()
 
     result = []
