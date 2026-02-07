@@ -103,6 +103,23 @@ def create_transaction():
         "total_price": total_price
     }), 201
 
+@app.route("/inventory", methods=["GET"])
+def get_inventory():
+    inventory_items = Inventory.query.all()
+
+    result = []
+    for item in inventory_items:
+        result.append({
+            "id": item.id,
+            "name": item.name,
+            "expiry": item.expiry.isoformat() if item.expiry else None,
+            "quantity": item.quantity,
+            "category": item.category,
+            "price": item.price,
+            "description": item.description
+        })
+
+    return jsonify(result), 200
 
 with app.app_context():
     db.create_all()
