@@ -18,9 +18,12 @@ class User(db.Model):
 
 class Inventory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    product_name = db.Column(db.String(120), unique=True, nullable=False)
-    product_quantity = db.Column(db.Integer, nullable=False)
-    price_per_one = db.Column(db.Float, nullable=False)
+    name = db.Column(db.String(120), nullable=False)
+    expiry = db.Column(db.Date, nullable=True)
+    quantity = db.Column(db.Integer, nullable=False)
+    category = db.Column(db.String(80), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    description = db.Column(db.Text, nullable=True)
 
 
 class Transaction(db.Model):

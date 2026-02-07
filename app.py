@@ -22,29 +22,42 @@ app.register_blueprint(auth, url_prefix="/auth")
 def add_inventory():
     data = request.get_json()
 
-    product_name = data.get("product_name")
-    product_quantity = data.get("product_quantity")
-    price_per_one = data.get("price_per_one")
+    name = data.get("name")
+    expiry = data.get("expiry")  # YYYY-MM-DD
+    quantity = data.get("quantity")
+    category = data.get("category")
+    price = data.get("price")
+    description = data.get("description")
 
-    if not all([product_name, product_quantity, price_per_one]):
-        return jsonify({"error": "Missing fields"}), 400
+    if not all([name, quantity, category, price]):
+        return jsonify({"error": "Missing required fields"}), 400
 
-    inventory = Inventory.query.filter_by(product_name=product_name).first()
+    expiry_date = None
+    if expiry:
+        expiry_date = datetime.strptime(expiry, "%Y-%m-%d").date()
+
+    inventory = Inventory.query.filter_by(name=name).first()
 
     if inventory:
-        inventory.product_quantity += product_quantity
-        inventory.price_per_one = price_per_one
+        inventory.quantity += quantity
+        inventory.price = price
+        inventory.category = category
+        inventory.expiry = expiry_date
+        inventory.description = description
     else:
         inventory = Inventory(
-            product_name=product_name,
-            product_quantity=product_quantity,
-            price_per_one=price_per_one
+            name=name,
+            expiry=expiry_date,
+            quantity=quantity,
+            category=category,
+            price=price,
+            description=description
         )
         db.session.add(inventory)
 
     db.session.commit()
 
-    return jsonify({"message": "Inventory updated successfully"}), 201
+    return jsonify({"message": "Inventory saved successfully"}), 201
 
 
 # -------------------------
@@ -54,26 +67,30 @@ def add_inventory():
 def create_transaction():
     data = request.get_json()
 
-    product_name = data.get("product_name")
-    product_quantity = data.get("product_quantity")
+    name = data.get("name")
+    quantity = data.get("quantity")
 
-    if not all([product_name, product_quantity]):
+    if not all([name, quantity]):
         return jsonify({"error": "Missing fields"}), 400
 
-    inventory = Inventory.query.filter_by(product_name=product_name).first()
+    inventory = Inventory.query.filter_by(name=name).first()
 
     if not inventory:
-        return jsonify({"error": "Product not found in inventory"}), 404
+        return jsonify({"error": "Item not found"}), 404
 
-    if inventory.product_quantity < product_quantity:
-        return jsonify({"error": "Not enough inventory"}), 400
+    if inventory.expiry and inventory.expiry < datetime.utcnow().date():
+        return jsonify({"error": "Item is expired"}), 400
 
-    total_price = product_quantity * inventory.price_per_one
-    inventory.product_quantity -= product_quantity
+    if inventory.quantity < quantity:
+        return jsonify({"error": "Insufficient stock"}), 400
+
+    total_price = quantity * inventory.price
+
+    inventory.quantity -= quantity
 
     transaction = Transaction(
-        product_name=product_name,
-        product_quantity=product_quantity,
+        product_name=name,
+        product_quantity=quantity,
         total_price=total_price,
         time_of_transaction=datetime.utcnow()
     )
@@ -82,7 +99,7 @@ def create_transaction():
     db.session.commit()
 
     return jsonify({
-        "message": "Transaction successful",
+        "message": "Transaction completed",
         "total_price": total_price
     }), 201
 
